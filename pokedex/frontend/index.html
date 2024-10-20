@@ -7,9 +7,32 @@
     <title>Pokedex</title>
 </head>
 <style>
-    
+    /* Animasi hover pada card */
+    .pokemon-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .pokemon-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Scroll bar styling for horizontal scroll */
+    ::-webkit-scrollbar {
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #4A5568;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #E2E8F0;
+    }
 </style>
-<body>
+<body class="bg-gray-900 text-white min-h-screen">
+
   <div id="root"></div>
 
   <script src="https://unpkg.com/react@16.7.0/umd/react.development.js"></script>

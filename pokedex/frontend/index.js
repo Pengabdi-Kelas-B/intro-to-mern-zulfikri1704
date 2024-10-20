@@ -16,31 +16,34 @@ async function fetchPokemon() {
   }
 }
 
+/// Card component
+function PokemonCard(props) {
+  return React.createElement(
+    "div",
+    { className: "pokemon-card bg-gray-800 text-white p-4 rounded-lg w-48 h-60 flex-shrink-0 transition transform duration-300 ease-in-out hover:scale-105 shadow-lg" },
+    React.createElement("img", { className: "w-full h-36 object-contain mb-2", src: props.image, alt: props.name }),
+    React.createElement("h2", { className: "text-lg font-semibold text-center" }, props.name),
+    React.createElement("p", { className: "text-center text-gray-400 text-sm" }, `Type: ${props.types}`)
+  );
+}
+
 // Card component
 function PokemonCard(props) {
   return React.createElement(
     "div",
-    { className: "" },
-    React.createElement("img", { src: props.image, alt: props.name }),
-    React.createElement("h2", null, props.name),
-    React.createElement("p", null, `Type: ${props.types}`)
+    { className: "pokemon-card bg-gray-800 text-white p-4 rounded-lg w-48 h-60 flex-shrink-0 transition transform duration-300 ease-in-out hover:scale-105 shadow-lg m-2" }, // Menambahkan margin pada kartu
+    React.createElement("img", { className: "w-full h-36 object-contain mb-2", src: props.image, alt: props.name }),
+    React.createElement("h2", { className: "text-lg font-semibold text-center" }, props.name),
+    React.createElement("p", { className: "text-center text-gray-400 text-sm" }, `Type: ${props.types}`)
   );
 }
 
-// List component
-function PokemonList() {
-  if (pokemonData.length === 0) {
-    return React.createElement(
-      "p",
-      { className: "text-center" },
-      "Loading Pokemon data..."
-    );
-  }
-
+// Row component for creating horizontal scroll
+function PokemonRow({ pokemons }) {
   return React.createElement(
     "div",
-    { className: "flex flex-wrap justify-center" },
-    pokemonData.map((pokemon) =>
+    { className: "flex overflow-x-auto py-2 mb-4" }, // Menambahkan margin bawah untuk pemisah antar scrollbar
+    pokemons.map((pokemon) =>
       React.createElement(PokemonCard, {
         key: pokemon.id,
         name: pokemon.name,
@@ -51,23 +54,53 @@ function PokemonList() {
   );
 }
 
-// App component wrap header and list
+// List component
+function PokemonList() {
+  if (pokemonData.length === 0) {
+    return React.createElement(
+      "p",
+      { className: "text-center text-gray-400 text-lg" },
+      "Loading Pokemon data..."
+    );
+  }
+
+  // Split pokemons into rows
+  const rows = [];
+  const rowCount = 10; // Total rows to display
+
+  for (let i = 0; i < Math.ceil(pokemonData.length / rowCount); i++) {
+    rows.push(pokemonData.slice(i * rowCount, i * rowCount + rowCount));
+  }
+
+  return React.createElement(
+    "div",
+    null,
+    rows.map((row, index) =>
+      React.createElement(PokemonRow, { key: index, pokemons: row })
+    )
+  );
+}
+
+// App component
 function App() {
   return React.createElement(
     "div",
-    { className: "" },
+    { className: "container mx-auto" },
     React.createElement(
       "header",
-      { className: "" },
+      { className: "bg-gray-800 py-6 shadow-md sticky top-0 z-10" },
       React.createElement(
         "h1",
-        { className: "text-3xl text-center font-bold underline" },
+        { className: "text-4xl font-bold text-center text-white" },
         "Pokedex"
       )
     ),
     React.createElement(PokemonList, null)
   );
 }
+
+
+
 
 // Function to render the app
 function renderApp() {
